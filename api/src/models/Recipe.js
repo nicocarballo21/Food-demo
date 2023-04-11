@@ -19,20 +19,25 @@ const Recipe = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      summary: { //reumen de el plato
+      summary: {
+        //reumen de el plato
         type: DataTypes.STRING,
         allowNull: true,
       },
       healthScore: {
         type: DataTypes.STRING,
       },
-      steps: { //paso a paso
+      steps: {
+        //paso a paso
         type: DataTypes.STRING,
       },
       createdInDb: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
+      },
+      diets: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
       },
     },
     { timetamps: false }

@@ -9,8 +9,8 @@ const getAllRecipesHandler = async (req, res) => {
   try {
     let totalRecipes = await getAllRecipes(); //ME FALTABA EL AWAITTTTTT
     const name = req.query.hasOwnProperty("name") //aca se fija si hay una constante name por query(en la ruta)
-    ? req.query.name.toLowerCase()
-    : null;
+      ? req.query.name.toLowerCase()
+      : null;
     if (name) {
       //si hay un nombre que me pasan por query
       let filteredRecipes = totalRecipes.filter((e) =>
@@ -41,7 +41,9 @@ const getRecipesByIdHandler = async (req, res) => {
 
 //Handler de PostRecipe
 const postRecipesHandler = async (req, res) => {
-  const { name, img, summary, healthScore, steps, diets } = req.body;
+  const { name, img, summary, healthScore, steps, createdInDb, diets } =
+    req.body;
+  console.log(diets);
   try {
     const newRecipe = await Recipe.create({
       name,
@@ -49,11 +51,16 @@ const postRecipesHandler = async (req, res) => {
       summary,
       healthScore,
       steps,
+      createdInDb,
     });
     const dietDB = await Diet.findAll({
       where: { name: diets },
     });
-    await newRecipe.addDiets(dietDB);
+
+    for (const diet of dietDB) {
+      await newRecipe.addDiet(diet);
+    }
+
     res.status(200).json(newRecipe);
   } catch (err) {
     res.status(400).json({ message: err });

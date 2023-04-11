@@ -10,9 +10,10 @@ const getDietsByApi = async () => {
   const mapDiets = await getDiets?.map((e) => e.diets);
 
   mapDiets.forEach((e) => e.forEach((dietByDiet) => allDiets.push(dietByDiet)));
-
+  console.log([...new Set(allDiets)])
   return [...new Set(allDiets)];
 };
+
 
 //Pasando los datos a DB
 
