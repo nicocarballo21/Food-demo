@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 export default function Card({ name, img, diets, healthScore }) {
   return (
     <div>

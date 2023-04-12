@@ -24,15 +24,35 @@ function rootReducer(state = initialState, action) {
         diets: action.payload,
       };
     case 'FILTER_BY_DIETS':
-      const allRecipes = state.allRecipes; //esto lo hacemos para que ene l segundo filtrado tome todos de nuevo
-      const dietsFiltered =
+      const allRecipes = state.allRecipes;
+      let filteredRecipesByDiets =
         action.payload === 'All'
           ? allRecipes
-          : allRecipes.filter(el => el.diets.includes(action.payload)); //le pusimo el includes, cuando la api funcione probamos
+          : allRecipes.filter(recipe => {
+              if (recipe.diets) {
+                return recipe.diets.includes(action.payload);
+              } else if (recipe.Diets) {
+                return recipe.Diets.some(diet => diet.name === action.payload);
+              } else {
+                return false;
+              }
+            });
       return {
         ...state,
-        recipes: dietsFiltered,
+        recipes: filteredRecipesByDiets,
       };
+    // case 'FILTER_BY_DIETS':
+    //   const allRecipes = state.allRecipes; //esto lo hacemos para que ene l segundo filtrado tome todos de nuevo
+    //   console.log(allRecipes, "TENGO QUE VER QUE ME LLEGA ACA, despues de hace un post");
+    //   const dietsFiltered =
+    //     action.payload === 'All'
+    //       ? allRecipes
+    //       : allRecipes.filter(el => el.diets.includes(action.payload)); //le pusimo el includes, cuando la api funcione probamos
+    //   console.log(dietsFiltered, "dietas filtradas");
+    //       return {
+    //     ...state,
+    //     recipes: dietsFiltered,
+    //   };
     case 'POST_RECIPES':
       return {
         ...state,
