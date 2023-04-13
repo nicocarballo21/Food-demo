@@ -5,9 +5,9 @@ const { getRecipesInApi } = require("../controllers/recipesController");
 const getDietsByApi = async () => {
   let allDiets = [];
 
-  const getDiets = await getRecipesInApi();
+  const getRecipes = await getRecipesInApi();
 
-  const mapDiets = await getDiets?.map((e) => e.diets);
+  const mapDiets = await getRecipes?.map((e) => e.diets);
 
   mapDiets.forEach((e) => e.forEach((dietByDiet) => allDiets.push(dietByDiet)));
   console.log([...new Set(allDiets)])

@@ -12,6 +12,7 @@ import {
 import Card from './Card'; //componentes
 import SearchBar from './SearchBar';
 import Paginado from './Paginado';
+import styles from "../styles/HomePage.module.css"
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -63,17 +64,18 @@ export default function HomePage() {
     setOrder(`Ordenado por health score ${e.target.value}`);
   };
   return (
-    <div>
-      <Link to="/recipes">Crear personaje</Link>
-      <h1>HOME DE FOOD</h1>
+    <div> 
+      <Link  to="/recipes">Crear personaje</Link>
+      <h1 >HOME DE FOOD</h1>
       <button
+        
         onClick={e => {
           handleClick(e);
         }}
       >
         Volver a cagar todas las recetas
       </button>
-      <div>
+      <div >
         <select onClick={e => handleSort2(e)}>
           <option value="des">Health Score/des</option>
           <option value="asc">Health Score/asc</option>
@@ -106,9 +108,11 @@ export default function HomePage() {
           allRecipes={allRecipes.length} //props
           paginado={paginado} //props
         />
-
+        <div >
         <SearchBar />
+        </div>
 
+        <div>
         {currentRecipes?.map(el => {
           //aca no tenemos que tomar a todos los personajes, tenemos que tomar los que nos devuelve el paginado
           if(el.createdInDb){
@@ -136,6 +140,8 @@ export default function HomePage() {
               </Link>
           );
         })}
+        </div>
+       
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { postRecipes, getDiets } from '../actions/index';
 import { useDispatch, useSelector } from 'react-redux';
+import styles from "../styles/RecipesCreate.module.css"
 
 const validate = input => {
     let error = {};
@@ -86,73 +87,78 @@ export default function RecipesCreate() {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className={styles.formContainer}>
       <Link to="/home">
         <button>Volver</button>
       </Link>
       <h1>Crea tu receta</h1>
-      <form onSubmit={e => handleSubmit(e)}>
-        <div>
-          <label>Nombre:</label>
+      <form onSubmit={e => handleSubmit(e)} className={styles.form}>
+        <div className={styles.formField}>
+          <label htmlFor="name" className={styles.formLabel}>Nombre:</label>
           <input
             type="text"
             value={input.name}
             name="name"
             onChange={e => handleChange(e)}
+            className={styles.formInput}
           />
           {error.name && (
             <p className='error'>{error.name}</p>
           )}
         </div>
-        <div>
-          <label>Image:</label>
+        <div className={styles.formField}>
+          <label htmlFor="img" className={styles.formLabel}>Image:</label>
           <input
             type="text"
             value={input.img}
             name="img"
             onChange={e => handleChange(e)}
+            className={styles.formInput}
           />
             {error.name && (
             <p className='error'>{error.name}</p>
           )}
         </div>
-        <div>
-          <label>Summary:</label>
+        <div className={styles.formField}>
+          <label htmlFor="summary" className={styles.formLabel}>Summary:</label>
           <input
             type="text"
             value={input.summary}
             name="summary"
             onChange={e => handleChange(e)}
+            className={styles.formInput}
           />
             {error.name && (
             <p className='error'>{error.name}</p>
           )}
         </div>
-        <div>
-          <label>HealScore:</label>
+        <div className={styles.formField}>
+          <label htmlFor="healthScore" className={styles.formLabel}>HealScore:</label>
           <input
             type="text"
             value={input.healthScore}
             name="healthScore"
             onChange={e => handleChange(e)}
+            className={styles.formInput}
           />
             {error.name && (
             <p className='error'>{error.name}</p>
           )}
         </div>
-        <div>
-          <label>Steps:</label>
+        <div className={styles.formField}>
+          <label htmlFor="steps" className={styles.formLabel}>Steps:</label>
           <input
             type="text"
             value={input.steps}
             name="steps"
             onChange={e => handleChange(e)}
+            className={styles.formInput}
           />
             {error.name && (
             <p className='error'>{error.name}</p>
           )}
         </div>
-        <select onChange={e => handleSelect(e)}>
+        <select onChange={e => handleSelect(e)} className={styles.formSelect}>
           {diets?.map(diet => (
             <option key={diet.id} value={diet.name}>
               {diet.name}
@@ -161,7 +167,7 @@ export default function RecipesCreate() {
         </select>
 
         <br/>
-        <button type="submit">Crear Personaje</button>
+        <button type="submit" className={styles.formButton} >Crear Personaje</button>
       </form>
       {input.diets.map(el =>
         <div className='divOcc'>

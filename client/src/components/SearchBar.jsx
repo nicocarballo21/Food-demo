@@ -6,34 +6,44 @@ import { getNameRecipes } from '../actions';
 export default function SearchBar() {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
+  // const [hasResults, setHasResults] = useState(true); //seteamos un estado local para ver si existe o no la receta, lo seteamos en true
 
   //tengo que guardar en mi estado local, lo que vaya llegando al input
 
   const handleInputChange = e => {
     e.preventDefault();
     setName(e.target.value);
-    console.log(name);
+    
   };
 
-  const handleSubmit = e => {
+
+
+  const handleSubmit = async (e) => { //la hacemos async para poder decirle que espere que el dispatch termine su ejecucion
     e.preventDefault();
-    dispatch(getNameRecipes(name));
+    /* let resultado = await*/ dispatch(getNameRecipes(name));
+    // if (resultado && resultado.length === 0) { //aca le preguntamos, si resultado tiene algo es porque encontro alguna receta con el name que le pasamos, si no tiene nada es porque no encontro nada
+    //   setHasResults(false); //
+    // } else {
+    //   setHasResults(true);
+    // }
     setName('');
   };
+
+
   //Guardamos lo que tipea el usuario en mi estado local, y le pasamo el valor del estdo local
   //a la funcion (action) geNameRecipes para que le pase el valor al endopoint y el back me devuelva el json.
   //con la data de la receta con ese nombre que le pasamos
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Buscar..."
-        onChange={e => handleInputChange(e)}
+        value={name}
+        onChange={handleInputChange}
       />
-      <button type="submit" onClick={e => handleSubmit(e)}>
-        Buscar
-      </button>
-    </div>
+      <button type="submit">Buscar</button>
+    </form>
   );
 }
+

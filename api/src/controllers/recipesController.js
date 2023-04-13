@@ -5,11 +5,9 @@ const { API_KEY } = process.env;
 
 // const API_KEY = "b2159194a2684224904f211382ed3a25"
 
-// MI URL: https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true
-
 //Funcion por ID. (cuando busco por id, me trae las instrucciones)
 const getRecipesById = async (id) => {
-  const value = isNaN(id) ? "dataBase" : "api";
+  const value = isNaN(id) ? "dataBase" : "api"; //si id no es numero, value data base
   if (value === "api") {
     const data = await axios
       .get(
@@ -65,7 +63,6 @@ const getRecipesInDb = async () => {
       },
     },
   });
-  console.log(recipe)
   // const recipeDb = recipe.map((e) => {
   //   return {
   //     name: e.name,

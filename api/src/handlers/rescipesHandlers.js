@@ -32,8 +32,8 @@ const getAllRecipesHandler = async (req, res) => {
 const getRecipesByIdHandler = async (req, res) => {
   const { id } = req.params; //sacamos el id de la url con req.params
   try {
-    const getId = await getRecipesById(id); //ejecutamos la funcion controladora con el id
-    res.status(200).json(getId); //y devolvemos ell resultado en un json
+    const getFilterRecipeById = await getRecipesById(id); //ejecutamos la funcion controladora con el id
+    res.status(200).json(getFilterRecipeById); //y devolvemos ell resultado en un json
   } catch (err) {
     res.status(400).json({ message: err });
   }
