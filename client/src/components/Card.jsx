@@ -8,14 +8,16 @@ export default function Card({ name, img, diets, healthScore }) {
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>{name}</h1>
       </div>
-      <div className={styles.leftContainer}>
-        <img src={img} alt="image not found" width="200px" height="250px" className={styles.image}  />
-        <h4 className={styles.healthScore}>Health Score: {healthScore}</h4>
-      </div>
-      <div className={styles.rightContainer}>
+      <div className={styles.containerDos}>
+        <div className={styles.leftContainer}>
+          <img src={img} alt="image not found" width="200px" height="250px" className={styles.image}  />
+          <h4 className={styles.healthScore}>Health Score: {healthScore}</h4>
+        </div>
+        <div className={styles.rightContainer}>
           <h4  className={styles.diets}>Diets: </h4>
           <h5 className={styles.dietsList}>{diets.map(e =>(<ul><li>{e}</li></ul>))}</h5>
-        </div>
+          </div>
+      </div>
       
     </div>
   );
