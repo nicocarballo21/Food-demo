@@ -21,7 +21,7 @@ const Recipe = (sequelize) => {
       },
       summary: {
         //reumen de el plato
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       healthScore: {
@@ -29,7 +29,7 @@ const Recipe = (sequelize) => {
       },
       steps: {
         //paso a paso
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
       createdInDb: {
         type: DataTypes.BOOLEAN,

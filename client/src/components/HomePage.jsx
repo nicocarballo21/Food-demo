@@ -12,7 +12,8 @@ import {
 import Card from './Card'; //componentes
 import SearchBar from './SearchBar';
 import Paginado from './Paginado';
-import styles from "../styles/HomePage.module.css"
+import styles from "../styles/homePage.module.css"
+import Loading from './Loading';
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    dispatch(getRecipes()); //este dispatch, hace dispatch cuando el componente se monta
+    dispatch(getRecipes()); //este dispatch, hace dispatch cuando el componente se monta, y muestre las recipes
   }, [dispatch]); //este segundo parametro, es para que no me haga un loop infinito, es de lo que depende que se haga el use effect.
 
   const handleClick = e => {
@@ -63,44 +64,51 @@ export default function HomePage() {
     setCurrentPage(1);
     setOrder(`Ordenado por health score ${e.target.value}`);
   };
+
   return (
-    <div> 
-      <Link  to="/recipes">Crear personaje</Link>
-      <h1 >HOME DE FOOD</h1>
-      <button
+    <div className={styles.totalContainer}> 
+      <div class={styles.container}>
         
+        <button
         onClick={e => {
           handleClick(e);
         }}
+        class={styles.button}
       >
-        Volver a cagar todas las recetas
+        Reload the recipes
       </button>
+        <Link class={styles.Link} to="/recipes">Create a recipe</Link>
+        <SearchBar class={styles.SearchBar} />
+      </div>
+      
+      <h1>HOME FOODS</h1>
+      
       <div >
         <select onClick={e => handleSort2(e)}>
           <option value="des">Health Score/des</option>
           <option value="asc">Health Score/asc</option>
         </select>
         <select onClick={e => handleSort(e)}>
-          <option value="asc">ACENDENTE/ABC</option>
-          <option value="desc">DESCENDENTE/ABC</option>
+          <option value="asc">A-Z</option>
+          <option value="desc">Z-A</option>
         </select>
         <select onClick={e => handleFilterDiets(e)}>
-          <option value="All">DIETAS TODAS</option>
-          <option value="gluten free">gluten free 1</option>
-          <option value="ketogenic">ketogenic 1</option>
-          <option value="dairy free">dairy free 1</option>
-          <option value="llacto ovo vegetarian">lacto ovo vegetarian 1</option>
-          <option value="vegan">vegan 1</option>
-          <option value="pescatarian">pescatarian 1</option>
-          <option value="paleolithic">paleolithic 1</option>
-          <option value="primal">primal 1</option>
-          <option value="fodmap friendly">fodmap friendly 1</option>
-          <option value="whole 30">whole 30 1</option>
+          <option value="All">All Diets</option>
+          <option value="gluten free">Gluten free</option>
+          <option value="ketogenic">Ketogenic</option>
+          <option value="dairy free">Dairy free</option>
+          <option value="lacto ovo vegetarian">Lacto ovo vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="pescatarian">Pescatarian</option>
+          <option value="paleolithic">Paleolithic</option>
+          <option value="primal">Primal</option>
+          <option value="fodmap friendly">Fodmap friendly</option>
+          <option value="whole 30">Whole 30</option>
         </select>
         <select onClick={e => handleFilterCreated(e)}>
-          <option value="todos">Todos</option>
-          <option value="created">Creado</option>
-          <option value="api">Existentes</option>
+          <option value="todos">All</option>
+          <option value="created">Created</option>
+          <option value="api">Api</option>
         </select>
 
         <Paginado
@@ -108,28 +116,30 @@ export default function HomePage() {
           allRecipes={allRecipes.length} //props
           paginado={paginado} //props
         />
-        <div >
-        <SearchBar />
-        </div>
+        
 
-        <div>
-        {currentRecipes?.map(el => {
+        <div className={styles.contenedor}>
+          
+        {currentRecipes === 0 ? (<Loading />) : (currentRecipes.map(el => {
           //aca no tenemos que tomar a todos los personajes, tenemos que tomar los que nos devuelve el paginado
           if(el.createdInDb){
             return (
-              <Link key={el.id} to={`/recipes/${el.id}`}>
-                <Card
+              <a key={el.id} href={`/recipes/${el.id}`}>
+                <div className={styles.card}>
+                  <Card
                   name={el.name}
                   img={el.img}
                   diets={el.Diets.map((e) => e.name)}
                   healthScore={el.healthScore}
                   key={el.id}
                 />
-              </Link>
+                </div>
+              </a>
           );
           }
           return (
-              <Link key={el.id} to={`/recipes/${el.id}`}>
+              <a key={el.id} href={`/recipes/${el.id}`}>
+                <div className={styles.card}>
                 <Card
                   name={el.name}
                   img={el.img}
@@ -137,9 +147,10 @@ export default function HomePage() {
                   healthScore={el.healthScore}
                   key={el.id}
                 />
-              </Link>
+                </div>
+              </a>
           );
-        })}
+        }))}
         </div>
        
       </div>

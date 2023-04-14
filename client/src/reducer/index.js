@@ -2,7 +2,7 @@ const initialState = {
   recipes: [],
   allRecipes: [],
   diets: [],
-  detail: {},
+  detail: {}, //object, porque el filtrado de id me devuelve un objeto
 };
 
 function rootReducer(state = initialState, action) {
@@ -28,10 +28,10 @@ function rootReducer(state = initialState, action) {
       let filteredRecipesByDiets =
         action.payload === 'All'
           ? allRecipes
-          : allRecipes.filter(recipe => {
-              if (recipe.diets) {
+          : allRecipes.filter(recipe => { //filtra todas, api y db
+              if (recipe.diets) { //api
                 return recipe.diets.includes(action.payload);
-              } else if (recipe.Diets) {
+              } else if (recipe.Diets) { //db
                 return recipe.Diets.some(diet => diet.name === action.payload);
               } else {
                 return false;
@@ -41,18 +41,6 @@ function rootReducer(state = initialState, action) {
         ...state,
         recipes: filteredRecipesByDiets,
       };
-    // case 'FILTER_BY_DIETS':
-    //   const allRecipes = state.allRecipes; //esto lo hacemos para que ene l segundo filtrado tome todos de nuevo
-    //   console.log(allRecipes, "TENGO QUE VER QUE ME LLEGA ACA, despues de hace un post");
-    //   const dietsFiltered =
-    //     action.payload === 'All'
-    //       ? allRecipes
-    //       : allRecipes.filter(el => el.diets.includes(action.payload)); //le pusimo el includes, cuando la api funcione probamos
-    //   console.log(dietsFiltered, "dietas filtradas");
-    //       return {
-    //     ...state,
-    //     recipes: dietsFiltered,
-    //   };
     case 'POST_RECIPES':
       return {
         ...state,

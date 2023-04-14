@@ -1,0 +1,68 @@
+.totalContainer {
+  background-color: #f5deb34b;
+  padding: 2%;
+}
+
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+
+.SearchBar {
+  margin-left: auto;
+}
+
+button {
+  background-color: #F5DEB3;
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #FFF5E6;
+}
+
+
+.Link {
+  background-color: #F5DEB3;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+Link:hover {
+  background-color: #FFF5E6;
+  
+}
+
+/*Estilo de las grillas*/
+.contenedor {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual ancho */
+    gap: 20px; /* Espacio entre las Cards */
+    
+  }
+  
+  .card {
+    background-color: #f5deb3b0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+
+a {
+  text-decoration: none;
+}

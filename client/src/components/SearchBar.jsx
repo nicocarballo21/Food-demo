@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getNameRecipes } from '../actions';
+import styles from "../styles/searchbar.module.css"
 
 export default function SearchBar() {
   const dispatch = useDispatch();
@@ -28,21 +29,22 @@ export default function SearchBar() {
     // }
     setName('');
   };
-
-
   //Guardamos lo que tipea el usuario en mi estado local, y le pasamo el valor del estdo local
   //a la funcion (action) geNameRecipes para que le pase el valor al endopoint y el back me devuelva el json.
   //con la data de la receta con ese nombre que le pasamos
-
   return (
     <form onSubmit={handleSubmit}>
-      <input
+      <div>
+        <input
         type="text"
         placeholder="Buscar..."
         value={name}
         onChange={handleInputChange}
+        className={styles.input}
       />
-      <button type="submit">Buscar</button>
+      <button type="submit">Search</button>
+      </div>
+      
     </form>
   );
 }

@@ -1,0 +1,48 @@
+.container {
+    background-color: rgba(255, 253, 208, 0.8);
+    padding: 20px;
+    border-radius: 10%;
+  }
+  
+  .detailsContainer {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .titleImageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .recipeImage {
+    width: 300px;
+    height: 300px;
+    border-radius: 20%;
+  }
+  
+  .detailsRigth {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start; 
+    text-align: justify;
+  }
+  
+.dietsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.dietsContainer h5 {
+  max-width: 100px;
+  margin-right: 5px;
+}
+
+p {
+  font-size: 20px;
+  margin-top: 10px;
+  color: #333;
+}

@@ -11,7 +11,7 @@ const getDietsByApi = async () => {
 
   mapDiets.forEach((e) => e.forEach((dietByDiet) => allDiets.push(dietByDiet)));
   console.log([...new Set(allDiets)])
-  return [...new Set(allDiets)];
+  return [...new Set(allDiets)]; //elimina valores repetidos.
 };
 
 

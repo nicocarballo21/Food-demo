@@ -14,7 +14,7 @@ const getAllRecipesHandler = async (req, res) => {
     if (name) {
       //si hay un nombre que me pasan por query
       let filteredRecipes = totalRecipes.filter((e) =>
-        e.name.toLowerCase().includes(name)
+        e.name.toLowerCase().includes(name) //a cada receta, su nombre completo lo pasamos a minuscula y preguntamos si incluye name
       );
       filteredRecipes.length > 0
         ? res.status(200).send(filteredRecipes)
@@ -44,7 +44,7 @@ const postRecipesHandler = async (req, res) => {
   const { name, img, summary, healthScore, steps, createdInDb, diets } =
     req.body;
   console.log(diets);
-  try {
+  try { //creamos la reseta en base de datos y la almacenamos en la variable
     const newRecipe = await Recipe.create({
       name,
       img,
@@ -53,7 +53,7 @@ const postRecipesHandler = async (req, res) => {
       steps,
       createdInDb,
     });
-    const dietDB = await Diet.findAll({
+    const dietDB = await Diet.findAll({ //aca le guardamos le concatenamos las dietas que seleccinamos por body, que ya estan en db
       where: { name: diets },
     });
 
