@@ -1,41 +1,34 @@
 const { Diet } = require("../db");
 const { getRecipesInApi } = require("./recipesController");
 
-//Traigo las Diets de la Api, primero Trayendome la api con la funcion getRecipesInApi y despues la mapeo
 const getDietsByApi = async () => {
   let allDiets = [];
 
   const getRecipes = await getRecipesInApi();
-
   const mapDiets = await getRecipes?.map((e) => e.diets);
-
   mapDiets.forEach((e) => e.forEach((dietByDiet) => allDiets.push(dietByDiet)));
-  console.log([...new Set(allDiets)]);
-  return [...new Set(allDiets)]; //elimina valores repetidos.
+  return [...new Set(allDiets)];
 };
 
-//Pasando los datos a DB
 const saveDietsInDB = async () => {
- 
-}
+  try {
+    const apiDiets = await getDietsByApi();
 
+    apiDiets.forEach((e) => {
+      Diet.findOrCreate({ where: { name: e } });
+    });
+  } catch (error) {
+    return { error: "Error on create diets in DB" };
+  }
+};
 
-
-//Retornando los datos de DB
+// solo retorna dietas en base de datos
 const getAllDiets = async () => {
-  const apiDiets = await getDietsByApi();
-
-  apiDiets.forEach((e) => {
-     Diet.findOrCreate({
-       where: { name: e },
-     });
-   });
-  const getDiets = await Diet.findAll();
-
-  return getDiets;
+  return await Diet.findAll();
 };
 
 module.exports = {
   getDietsByApi,
   getAllDiets,
+  saveDietsInDB,
 };

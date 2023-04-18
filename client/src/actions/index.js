@@ -31,6 +31,15 @@ export function getDiets() {
   };
 }
 
+export function hydrateDiets() {
+  return async function (dispatch) {
+    const res = await axios.post('http://localhost:3001/diets/hydrate');
+    return dispatch({ type: 'GET_DIETS', payload: res.data });
+  };
+}
+
+
+
 export function postRecipes(payload) {
   return async function (dispatch) {
     let json = await axios.post('http://localhost:3001/recipes', payload);

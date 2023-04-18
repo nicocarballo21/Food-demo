@@ -4,8 +4,24 @@ import LandingPage from './components/LandingPage';
 import HomePage from './components/HomePage';
 import RecipesCreate from './components/RecipesCreate';
 import DetailPage from "./components/DetailPage";
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-function App() {
+const App = () => {
+
+  const diets = useSelector(store => store.state.diets)
+
+  // First load - hydrate DB with diests
+  useEffect(() => { 
+    const hydrate = async () => {
+      await hydrateDiets()
+    }
+    
+    !diets.length && hydrate()
+  }, []);
+
+
+
   return (
     <BrowserRouter>
       <div className="App">
