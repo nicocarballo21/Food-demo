@@ -12,7 +12,7 @@ import {
 import Card from './Card'; //componentes
 import SearchBar from './SearchBar';
 import Paginado from './Paginado';
-import styles from "../styles/homePage.module.css"
+import styles from '../styles/homePage.module.css';
 import Loading from './Loading';
 
 export default function HomePage() {
@@ -44,7 +44,11 @@ export default function HomePage() {
 
   const handleFilterDiets = e => {
     //esta funcion es la que paso en el select, y le decimos,
-    dispatch(filterRecipesByDiets(e.target.value)); // cuando vos te modifiques ejecutas esta funcion, esta funcion hace dispatch de la accion. y le paso como parametro el value (e.target.value)
+    dispatch(filterRecipesByDiets(e.target.value));
+    if (e.target.value !== "All"){
+      setCurrentPage(1)
+    }
+     // cuando vos te modifiques ejecutas esta funcion, esta funcion hace dispatch de la accion. y le paso como parametro el value (e.target.value)
   };
 
   const handleFilterCreated = e => {
@@ -58,7 +62,7 @@ export default function HomePage() {
     setOrder(`Ordenado ${e.target.value}`); //
   };
 
-  const handleSort2 = (e) => {
+  const handleSort2 = e => {
     e.preventDefault();
     dispatch(orderByHealthScore(e.target.value));
     setCurrentPage(1);
@@ -66,24 +70,25 @@ export default function HomePage() {
   };
 
   return (
-    <div className={styles.totalContainer}> 
+    <div className={styles.totalContainer}>
       <div class={styles.container}>
-        
         <button
-        onClick={e => {
-          handleClick(e);
-        }}
-        class={styles.button}
-      >
-        Reload the recipes
-      </button>
-        <Link class={styles.Link} to="/recipes">Create a recipe</Link>
-        <SearchBar class={styles.SearchBar} />
+          onClick={e => {
+            handleClick(e);
+          }}
+          class={styles.button}
+        >
+          Reload the recipes
+        </button>
+        <Link  class={styles.Link} to="/recipes">
+          Create a recipe
+        </Link>
+        <SearchBar setPage={setCurrentPage} class={styles.SearchBar} />
       </div>
-      
+
       <h1>HOME FOODS</h1>
-      
-      <div >
+
+      <div>
         <select onClick={e => handleSort2(e)}>
           <option value="des">Health Score/des</option>
           <option value="asc">Health Score/asc</option>
@@ -116,43 +121,46 @@ export default function HomePage() {
           allRecipes={allRecipes.length} //props
           paginado={paginado} //props
         />
-        
 
         <div className={styles.contenedor}>
-          
-        {currentRecipes === 0 ? (<Loading />) : (currentRecipes.map(el => {
-          //aca no tenemos que tomar a todos los personajes, tenemos que tomar los que nos devuelve el paginado
-          if(el.createdInDb){
-            return (
-              <a key={el.id} href={`/recipes/${el.id}`}>
-                <div className={styles.card}>
-                  <Card
-                  name={el.name}
-                  img={el.img}
-                  diets={el.Diets.map((e) => e.name)}
-                  healthScore={el.healthScore}
-                  key={el.id}
-                />
-                </div>
-              </a>
-          );
-          }
-          return (
-              <a key={el.id} href={`/recipes/${el.id}`}>
-                <div className={styles.card}>
-                <Card
-                  name={el.name}
-                  img={el.img}
-                  diets={el.diets}
-                  healthScore={el.healthScore}
-                  key={el.id}
-                />
-                </div>
-              </a>
-          );
-        }))}
+          {currentRecipes ? (
+            currentRecipes.map(el => {
+              //aca no tenemos que tomar a todos los personajes, tenemos que tomar los que nos devuelve el paginado
+              if (el.createdInDb) {
+                return (
+                  <a key={el.id} href={`/recipes/${el.id}`}>
+                    <div className={styles.card}>
+                      <Card
+                        name={el.name}
+                        img={el.img}
+                        diets={el.Diets.map(e => e.name)}
+                        healthScore={el.healthScore}
+                        key={el.id}
+                      />
+                    </div>
+                  </a>
+                );
+              }
+              return (
+                <a key={el.id} href={`/recipes/${el.id}`}>
+                  <div className={styles.card}>
+                    <Card
+                      name={el.name}
+                      img={el.img}
+                      diets={el.diets}
+                      healthScore={el.healthScore}
+                      key={el.id}
+                    />
+                  </div>
+                </a>
+              );
+            })
+          ) : (
+            <div>
+              <Loading />
+            </div>
+          )}
         </div>
-       
       </div>
     </div>
   );

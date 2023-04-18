@@ -6,8 +6,6 @@ const { API_KEY } = process.env;
 // const API_KEY = "b2159194a2684224904f211382ed3a25"
 //END POINT PARA TOTALRECIPES: https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100
 //END POINT PARA GETRECIPESBYID: https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}&number=100
-//ENDPOIT MOKEADA ID: https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5/${id} 
-//ENDPOIT MOKEADA: https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5
 
 
 //Funcion por ID. (cuando busco por id, me trae las instrucciones)
@@ -16,7 +14,7 @@ const getRecipesById = async (id) => {
   if (value === "api") {
     const data = await axios
       .get(
-        `https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5/${id}`
+        `https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5/${id} `
       )
       .then((response) => response.data)
       .then((data) => {
@@ -68,16 +66,6 @@ const getRecipesInDb = async () => {
       },
     },
   });
-  // const recipeDb = recipe.map((e) => {
-  //   return {
-  //     name: e.name,
-  //     image: e.image,
-  //     summary: e.summary,
-  //     healthscore: e.healthscore,
-  //     steps: e.steps,
-  //     diets: e.Diets.map((x) => x.name),
-  //   };
-  // });
   return recipe;
 };
 
@@ -86,7 +74,6 @@ const getAllRecipes = async () => {
   let apiInfo = await getRecipesInApi();
   let dbInfo = await getRecipesInDb();
   const allRecipes = [...apiInfo, ...dbInfo];
-  // console.log(allRecipes);
   return allRecipes;
 };
 

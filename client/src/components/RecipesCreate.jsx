@@ -10,7 +10,8 @@ export default function RecipesCreate() {
   const dispatch = useDispatch();
   const history = useHistory();
   const diets = useSelector(state => state.diets);
-  
+  const allRecipes = useSelector(state => state.allRecipes) //me traigo las recetas para controlar que no hayan repetidas
+  const [errors, setErrors] = useState({}) //me creo un estado error para guardar los errores
 
   const [input, setInput] = useState({
     name: '',
@@ -21,45 +22,74 @@ export default function RecipesCreate() {
     diets: [],
   });
 
+  //VALIDATE FUNCTIONS
+  const validateFunction = (input) =>{
+    let errors = {};
+
+    if(!input.name){
+      errors.name = "Name is required"
+    } else if(!/^[a-zA-Z]+$/.test(input.name)){
+      errors.name = "The name can only contain letters"
+    }
+
+    if(!input.img){
+      errors.img = "Url image is required"
+    } else if(!/^https?:\/\/(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|png|gif)$/i.test(input.img)){
+      errors.img = "You need to enter an image url"
+    }
+
+    if(!input.summary){
+      errors.summary = "Summary is required"
+    }
+
+    if(!input.healthScore){
+      errors.healthScore = "Health Score is required"
+    } else if (isNaN(input.healthScore)){
+      errors.healthScore = "Health Score has to be a number"
+    } else if (input.healthScore < 0 || input.healthScore > 100){
+      errors.healthScore = "Health Score has to be a number between 0 and 100"
+    }
+ 
+    if(!input.steps){
+      errors.steps = "Steps is required"
+    }
+
+    return errors;
+  }
+
+
+  useEffect(() => {
+    dispatch(getDiets());
+  }, [dispatch]);
+
+//------------------------------- ---------------------------------
+
+//INPUTS HANDLERS
   const handleChange = e => {
     setInput({
       ...input,
       [e.target.name]: e.target.value,
     });
+    setErrors(
+      validateFunction({
+        ...input,
+        [e.target.name]: [e.target.value],
+      })
+    );
   };
+
+ 
+  //------------------------- -----------------------------
 
   const handleSelect = e => {
-    setInput({
-      ...input,
-      diets: [...input.diets, e.target.value], //esto me va a ir guardando lo que yo seleccione en el selct
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isNaN(input.healthScore)) {
-      alert('En el healthScore debe agregar un valor numerico');
-      return; 
+    if(input.diets.includes(e.target.value)){ //controlamos que no hayan repetidos
+      alert("You can't choose the same diets twice")
+    } else {
+      setInput({
+        ...input,
+        diets: [...input.diets, e.target.value], //esto me va a ir guardando lo que yo seleccione en el select de las diets
+      });
     }
-    if(input.healthScore < 0 || input.healthScore > 100){
-      alert('El helthScore debe ser un numero entre 0 y 100');
-      return
-    }
-    if (!input.name || !input.img || !input.summary || !input.healthScore || !input.steps || input.diets.length === 0) {
-      alert('Debe completar todos los campos y seleccionar al menos una receta');
-      return;
-    }
-    dispatch(postRecipes(input));
-    alert('Receta creada exitosamente');
-    setInput({
-      name: '',
-      img: '',
-      summary: '',
-      healthScore: '',
-      steps: '',
-      diets: [],
-    });
-    history.push('/home');
   };
 
   const handleDelete = (e)=>{
@@ -67,11 +97,43 @@ export default function RecipesCreate() {
       ...input,
       diets: input.diets.filter(p => p !== e)
     })
-  }
+  };
 
-  useEffect(() => {
-    dispatch(getDiets());
-  }, [dispatch]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let repitedRecipes = allRecipes.filter((recipe)=> recipe.name === input.name) //guardamos ne la variable, alguna receta que tenga el mismo nombre que la que vamos a crear
+    if(repitedRecipes.length !== 0){
+      alert("There is already a recipe with that name, please choose another one");
+    } else {
+      let error = Object.keys(validateFunction(input));
+      if(error.length !== 0 || !input.diets.length){
+        alert("You must complete all fields correctly and select at least one recipe");
+        return;
+      } else {
+        dispatch(postRecipes(input));
+        alert('Recipe created successfully');
+        setInput({
+          name: '',
+          img: '',
+          summary: '',
+          healthScore: '',
+          steps: '',
+          diets: [],
+        });
+        history.push('/home');
+      }
+    } 
+   
+  };
+
+  
+
+
+
+//------------------------------ ---------------------------
+
+  //RETURN
+  
 
   return (
     <div className={styles.formContainer}>
@@ -88,9 +150,10 @@ export default function RecipesCreate() {
             name="name"
             onChange={e => handleChange(e)}
             placeholder='Name...'
-            className={styles.formInput}
-          />
-          
+            className={`${styles.formInput} ${errors.name && styles.error}`}
+          /> 
+          {errors.name && <div className="error">{errors.name}</div>}  
+
         </div>
         <div className={styles.formField}>
           <label htmlFor="img" className={styles.formLabel}>Image:</label>
@@ -100,9 +163,10 @@ export default function RecipesCreate() {
             name="img"
             onChange={e => handleChange(e)}
             placeholder='Url Image...'
-            className={styles.formInput}
+            className={`${styles.formInput} ${errors.img && styles.error}`}
           />
-            
+          {errors.img && <div className="error">{errors.img}</div>}
+
         </div>
         <div className={styles.formField}>
           <label htmlFor="summary" className={styles.formLabel}>Summary:</label>
@@ -112,9 +176,10 @@ export default function RecipesCreate() {
             name="summary"
             onChange={e => handleChange(e)}
             placeholder='Summary...'
-            className={styles.formInput}
+            className={`${styles.formInput} ${errors.summary && styles.error}`}
           />
-            
+          {errors.summary && <div className="error">{errors.summary}</div>}
+
         </div>
         <div className={styles.formField}>
           <label htmlFor="healthScore" className={styles.formLabel}>HealthScore:</label>
@@ -124,9 +189,10 @@ export default function RecipesCreate() {
             name="healthScore"
             onChange={e => handleChange(e)}
             placeholder='Health Score...'
-            className={styles.formInput}
+            className={`${styles.formInput} ${errors.healthScore && styles.error}`}
           />
-            
+          {errors.healthScore && <div className="error">{errors.healthScore}</div>} 
+
         </div>
         <div className={styles.formField}>
           <label htmlFor="steps" className={styles.formLabel}>Steps:</label>
@@ -136,10 +202,12 @@ export default function RecipesCreate() {
             name="steps"
             onChange={e => handleChange(e)}
             placeholder='Steps...'
-            className={styles.formInput}
+            className={`${styles.formInput} ${errors.steps && styles.error}`}
           />
-            
+          {errors.steps && <div className="error">{errors.steps}</div>}
+
         </div>
+        <h4>Choose your Diets:</h4>
         <select onChange={e => handleSelect(e)} className={styles.formSelect}>
           {diets?.map(diet => (
             <option key={diet.id} value={diet.name}>
@@ -158,4 +226,4 @@ export default function RecipesCreate() {
         </div>)}
     </div>
   );
-}
+      }

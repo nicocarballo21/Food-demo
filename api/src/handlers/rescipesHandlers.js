@@ -7,7 +7,7 @@ const { Recipe, Diet } = require("../db");
 //Handler de all recipes. Vamos a hacer dos rutas en una, una que me traiga todas las recetas y otra que m traiga por query parameter
 const getAllRecipesHandler = async (req, res) => {
   try {
-    let totalRecipes = await getAllRecipes(); //ME FALTABA EL AWAITTTTTT
+    let totalRecipes = await getAllRecipes(); 
     const name = req.query.hasOwnProperty("name") //aca se fija si hay una constante name por query(en la ruta)
       ? req.query.name.toLowerCase()
       : null;
@@ -39,7 +39,6 @@ const getRecipesByIdHandler = async (req, res) => {
   }
 };
 
-//Handler de PostRecipe
 const postRecipesHandler = async (req, res) => {
   const { name, img, summary, healthScore, steps, createdInDb, diets } =
     req.body;

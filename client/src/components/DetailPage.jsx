@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getDetail } from '../actions/index';
 import { useEffect } from 'react';
 import styles from '../styles/detailPage.module.css';
+import Loading from './Loading';
 
 
 export default function DetailPage(props) {
@@ -49,7 +50,8 @@ export default function DetailPage(props) {
           </div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <Loading />
+        // <p>Loading...</p>
       )}
       <Link to="/home">
         <button>Volver</button>
